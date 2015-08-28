@@ -1,6 +1,6 @@
 #Number of organisms. Don't make this too big or small.
 N=
-10001
+2000
 
 #Mutation rates mu1 and mu2.
 mu1=
