@@ -52,13 +52,16 @@ end
 
 fclose(fileID);
 
-break;
+
 
 
 %Catching errors in settings.txt file
- if variables.killed_on_update{1} > variables.N{1}
-     error('# organisms killed must be less than starting # organisms')
- end
+try
+Catch_Errors
+catch exception
+    break;
+end
+ 
 
 
 %Sets Nx5 population array
@@ -85,7 +88,7 @@ end;
     
     
  %Opens a fitness landscape if there is one.
- fileName = uigetfile('.txt','Choose a fitness landscape.');
+ fileName = uigetfile('.txt','Choose a fitness landscape. Cancel for default.');
  if(fileName == 0)
      p = [1.2 0.5 1 1.2 0.5 1;1 0.2 1 1 0.7 1];
  else 

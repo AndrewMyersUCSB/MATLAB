@@ -1,6 +1,6 @@
 #Number of organisms. Don't make this too big or small.
 N=
-
+10001
 
 #Mutation rates mu1 and mu2.
 mu1=
@@ -15,6 +15,7 @@ updates=
 #Number of organisms killed each update. Must be less than N.
 killed_on_update=
 250
+
 #Asexual reproduction? 1 for true and 0 for false.
 asexual=
 1
