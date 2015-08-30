@@ -6,8 +6,8 @@
 variables = struct();
 
 %Array of names, and length of array.
-names_array = {'N','mu1','mu2','updates','killed_on_update','asexual','mut_effect','plot_image','save_image'};
-default_array = {2000, 0.05, 0.05, 50000, 200, 1, 0.05, 1, 0, 0};
+names_array = {'N','mu1','mu2','updates','killed_on_update','asexual','mut_effect','plot_image','save_image', 'suppress_prompts', 'default_FLS'};
+default_array = {2000, 0.05, 0.05, 50000, 200, 1, 0.05, 1, 0, 0, 0, 'FLS1.txt'};
 name_counter = length(names_array);
 
 % new set of pseudorandom numbers
@@ -22,7 +22,7 @@ if(fileID == -1)
         variables.(char(names_array(j))) = default_array(j);
 
        %Prints default values for user.
-       fprintf(names_array{j} + ' = ' + variables.(char(names_array(j))))
+       fprintf(names_array{j} + ' = ' + variables.(char(names_array(j))) + '\n')
    end
   
 else
@@ -37,8 +37,11 @@ else
             names_array{name_counter} = tline(1:length(tline)-1);
             
             tline = fgetl(fileID);
-
+        if tline(1) >= 48 && tline(1) <= 57
             variables.(char(names_array(name_counter)))= textscan(tline, '%f');
+        else
+            variables.(char(names_array(name_counter))) = tline;
+        end
                 
         
         end
@@ -55,13 +58,37 @@ fclose(fileID);
 
 
 
-%Catching errors in settings.txt file
-try
-Catch_Errors
-catch exception
-    break;
+%Catching errors in settings.txt file. Checks if outputs are suppressed.
+if variables.suppress_prompts{1} == 0
+    try
+    Catch_Errors
+    catch exception
+        break;
+    end
+    
+   %Lets the user choose a FLS.
+    fileName = uigetfile('.txt','Choose a fitness landscape. Cancel for default.');
+    if ~(fileName == 0)
+        p = dlmread(fileName,' ');
+    end
+
+    
+else %if outputs ARE suppressed
+
+    %Opens default FLS from settings.txt
+     fileID = fopen(variables.default_FLS);
+    if fileID <= 0
+         fprintf('Tried to run default FLS, no such file. Using built in default.\n')
+    else
+        p = dlmread(variables.default_FLS,' ');
+    end
+
+    fclose('all');
 end
- 
+
+if ~exist('p', 'var')
+   p = [1.2 0.5 1 1.2 0.5 1;1 0.2 1 1 0.7 1]; 
+end
 
 
 %Sets Nx5 population array
@@ -87,13 +114,7 @@ end;
     
     
     
- %Opens a fitness landscape if there is one.
- fileName = uigetfile('.txt','Choose a fitness landscape. Cancel for default.');
- if(fileName == 0)
-     p = [1.2 0.5 1 1.2 0.5 1;1 0.2 1 1 0.7 1];
- else 
-    p = dlmread(fileName,' ');
- end
+ 
  
     
  TL_Evolve_V1;

@@ -1,6 +1,6 @@
 #Number of organisms. Don't make this too big or small.
 N=
-2000
+10001
 
 #Mutation rates mu1 and mu2.
 mu1=
@@ -31,3 +31,12 @@ plot_image=
 #Save image into folder? 1 for true, 0 for false.
 save_image=
 1
+
+#Suppress warnings and prompts for input files. 1 for true, 0 for false.
+suppress_prompts=
+1
+
+#Automatically chooses this file (if exists) as Fitness Landscape. String.
+#Only uses if suppress_prompts = 1. 
+default_FLS=
+FLS2.txt
