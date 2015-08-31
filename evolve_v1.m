@@ -78,7 +78,7 @@ else %if outputs ARE suppressed
     %Opens default FLS from settings.txt
      fileID = fopen(variables.default_FLS);
     if fileID <= 0
-         fprintf('Tried to run default FLS, no such file. Using built in default.\n')
+         error('Tried to run default FLS, no such file. Using built in default.\n')
     else
         p = dlmread(variables.default_FLS,' ');
     end
@@ -87,7 +87,7 @@ else %if outputs ARE suppressed
 end
 
 if ~exist('p', 'var')
-   p = [1.2 0.5 1 1.2 0.5 1;1 0.2 1 1 0.7 1]; 
+   error('Fitness Landscape does not exist.') 
 end
 
 
